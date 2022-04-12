@@ -44,8 +44,7 @@ public:
                           const int &gpu_id, const int &gpu_mem,
                           const int &cpu_math_library_num_threads,
                           const bool &use_mkldnn, const string &label_path,
-                          const bool &use_tensorrt, const std::string &precision,
-                          const int &rec_batch_num) {
+                          const bool &use_tensorrt, const std::string &precision) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -53,7 +52,6 @@ public:
     this->use_mkldnn_ = use_mkldnn;
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
-    this->rec_batch_num_ = rec_batch_num;
 
     this->label_list_ = Utility::ReadDict(label_path);
     this->label_list_.insert(this->label_list_.begin(),
@@ -66,7 +64,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<cv::Mat> img_list, std::vector<double> *times);
+  void Run(cv::Mat& img, std::vector<std::string>& str_res, std::vector<float>& scores, std::vector<double>* times);
 
 private:
   std::shared_ptr<Predictor> predictor_;
@@ -84,12 +82,10 @@ private:
   bool is_scale_ = true;
   bool use_tensorrt_ = false;
   std::string precision_ = "fp32";
-  int rec_batch_num_ = 6;
-    
   // pre-process
   CrnnResizeImg resize_op_;
   Normalize normalize_op_;
-  PermuteBatch permute_op_;
+  Permute permute_op_;
 
   // post-process
   PostProcessor post_processor_;
