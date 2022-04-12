@@ -43,7 +43,7 @@ endif()
 if (WIN32)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
-  find_package(OpenCV REQUIRED PATHS D:/Code/Library/opencv/build/ NO_DEFAULT_PATH)
+  find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()
   find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/share/OpenCV NO_DEFAULT_PATH)
